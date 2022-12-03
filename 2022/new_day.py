@@ -13,7 +13,7 @@ f"""
 from pathlib import Path
 CURR_DIR = Path()
 
-day_input_file = file.open(CURR_DIR / 'day{day}_input.txt')
+day_input_file = open(CURR_DIR / 'day{day}_input.txt')
 # day_input = day_input_file.readlines()
 # day_input = day_input_file.read()
 """
@@ -46,7 +46,7 @@ while (inp := input().lower()):
         if inp == 'python':
             lang_folder.mkdir(exist_ok=True)
             for i in (1, 2):
-                with open(lang_folder / f'day{day}_{inp}_{i}', 'w') as file:
+                with open(lang_folder / f'day{day}_{inp}_{i}.py', 'w') as file:
                     file.write(templates['python'])
         else:
             ...
