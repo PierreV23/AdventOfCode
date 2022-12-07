@@ -40,17 +40,14 @@ while (inp := input().lower()):
     
     day_folder = CURR_DIR / f'day{day}'
     day_folder.mkdir(exist_ok=True)
-    if (lang_folder := day_folder / f'day{day}_{inp}').exists():
-        print("This folder already exists")
+    if inp == 'python' and not (lang_folder := day_folder / f'day{day}_{inp}').exists():
+        lang_folder.mkdir(exist_ok=True)
+        for i in (1, 2):
+            with open(lang_folder / f'day{day}_{inp}_{i}.py', 'w') as file:
+                file.write(templates['python'])
     else:
-        if inp == 'python':
-            lang_folder.mkdir(exist_ok=True)
-            for i in (1, 2):
-                with open(lang_folder / f'day{day}_{inp}_{i}.py', 'w') as file:
-                    file.write(templates['python'])
-        else:
-            ...
-        with open(lang_folder / f'day{day}_input.txt', 'w') as file:
-            res = session.get(f'https://adventofcode.com/2022/day/{day}/input')
-            file.write(res.text)
+        ...
+    with open(lang_folder / f'day{day}_input.txt', 'w') as file:
+        res = session.get(f'https://adventofcode.com/2022/day/{day}/input')
+        file.write(res.text)
 print("Exiting")
