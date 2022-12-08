@@ -4,15 +4,12 @@ from pprint import pprint
 day_input_file = open(CURR_DIR / 'day8_input.txt')
 # day_input_file = open(CURR_DIR / 'test.txt')
 day_input = day_input_file.readlines()
-# day_input = day_input_file.read()
 
 grid = [[int(number) for number in line.strip()] for line in day_input]
 if len(grid) < 20: pprint(grid)
 height = len(grid)
 width = len(grid[0])
 edge = height*2 + (width-2) * 2
-# print(edge)
-# input()
 def f(transformer):
     unique = set()
     for y in range(height):
@@ -23,7 +20,7 @@ def f(transformer):
             temp.append(grid[a][b])
             if grid[a][b] > ma:
                 ma = grid[a][b]
-                unique.add((len(grid)+a if a < 0 else a, len(grid[0])+b if b < 0 else b))
+                unique.add((height+a if a < 0 else a, width+b if b < 0 else b))
     return unique
 
 def left_right(y, x):
