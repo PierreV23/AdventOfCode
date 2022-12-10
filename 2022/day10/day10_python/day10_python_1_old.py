@@ -11,7 +11,8 @@ day_input = day_input_file.readlines()
 #     "addx -5"
 # ]
 cycle_counter = 0
-total_cycles = 0
+# total_cycles = 0
+total_cycles = 1
 x_register = 1
 signal_strengths = []
 line_number = 0
@@ -29,7 +30,8 @@ while line_number < len(day_input):
     
     if (total_cycles - 20) % 40 == 0:
         print(f"{total_cycles}th * {x_register} ; {line_number}")
-        signal_strengths.append((total_cycles, x_register))
+        signal_strengths.append(total_cycles * x_register)
+        # signal_strengths.append((total_cycles, x_register))
         # total_cycles = 0
         # x_register = 1
         # print(total_cycles, cycle_counter, x_register)
@@ -52,11 +54,12 @@ while line_number < len(day_input):
                 )
     
     # print(total_cycles, cycle_counter, x_register)
-ans = 0
-for idx, (a, b) in enumerate(signal_strengths):
-    if idx == len(signal_strengths) - 1:
-        b -= 1
-    ans += a * b
+# ans = 0
+# for idx, (a, b) in enumerate(signal_strengths):
+#     if idx == len(signal_strengths) - 1:
+#         b -= 1
+#     ans += a * b
 
-print(ans)
+# print(ans)
 
+print(sum(signal_strengths))
