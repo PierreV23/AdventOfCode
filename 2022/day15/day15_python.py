@@ -275,6 +275,7 @@ def oppervlakte_coords(afstanden):
     print("DONE SEARCHING COORDS")
     return coords
 
+
 def p2():
     sensors, s_b = sp()
     afstanden = {sensor:sum(abs(np.array(sensor) - np.array(s_b[sensor])))+1 for sensor in sensors}
@@ -304,7 +305,13 @@ def p2():
     #     # print(f'{y:02}'+"".join(('#' if (x,y) in c else '.') for x in range(21)))
     #     f = lambda x, y :(1 if (x, y) in sensors else 2) if (x, y) in bs else 0
     #     print(f'{y:02} '+"".join(({1: 'S', 2:'B'}[f(x, y)] if f(x, y) in (1,2) else ('#' if (x, y) in c else '.')) for x in range(21)))
-    for coord in c:
+    print("Going through coords")
+    i = 0
+    while c:
+        coord = c.pop()
+        i += 1
+        if not i%1_000_000:
+            print(f"reached {i} coords")
         if all(abs_afstand(coord, sensor) >= afstand for sensor, afstand in afstanden.items()):
             print(coord)
 
