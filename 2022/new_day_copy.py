@@ -19,6 +19,15 @@ file = open(CURR_DIR / filename)
 lines = open(CURR_DIR / filename).readlines()
 whole = open(CURR_DIR / filename).read()
 chunks = whole.split("\\n\\n")
+def p1():
+    ...
+
+def p2():
+    ...
+
+
+print(p1())
+print(p2())
 """
 }
 languages = [
@@ -41,16 +50,18 @@ while (inp := input().lower()):
     elif inp == "\n":
         break
     
+    # day_folder = CURR_DIR / f'day{day}'
+    # day_folder.mkdir(exist_ok=True)
     day_folder = CURR_DIR / f'day{day}'
     day_folder.mkdir(exist_ok=True)
-    if inp == 'python' and not (lang_folder := day_folder / f'day{day}_{inp}').exists():
-        lang_folder.mkdir(exist_ok=True)
-        for i in (1, 2):
-            with open(lang_folder / f'day{day}_{inp}_{i}.py', 'w') as file:
+    if inp == 'python':
+        if not (f := day_folder / f'day{day}_python.py').exists():
+            with open(f, 'w') as file:
                 file.write(templates['python'])
     else:
+        #  day_folder /= f'{inp}'
         ...
-    with open(lang_folder / f'day{day}_input.txt', 'w') as file:
+    with open(day_folder / f'day{day}_input.txt', 'w') as file:
         res = session.get(f'https://adventofcode.com/2022/day/{day}/input')
         file.write(res.text)
 print("Exiting")

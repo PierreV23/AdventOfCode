@@ -1,12 +1,13 @@
 # ignore all the useless bloat, i was trying some stuff out for a future AOC library
+from copy import copy
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Iterable
 from pprint import pprint
 CURR_DIR = Path()
 
-# day_input_file = open(CURR_DIR / 'day14_input.txt')
-day_input_file = open(CURR_DIR / 'test.txt')
+day_input_file = open(CURR_DIR / 'day14_input.txt')
+# day_input_file = open(CURR_DIR / 'test.txt')
 day_input = day_input_file.readlines()
 # day_input = day_input_file.read()
 
@@ -15,7 +16,7 @@ c = [[int(n) for n  in coords.split(",")] for line in day_input for coords in li
 HEIGHT = max(c, key=lambda x_y: x_y[1])[1]
 X_START = min(c, key=lambda x_y: x_y[0])[0]
 X_END = max(c, key=lambda x_y: x_y[0])[0]
-grid = [['.' for _ in range(X_END - X_START + 1)] for _ in range(HEIGHT + 1)]
+grid = [[0 for _ in range(X_END - X_START + 1)] for _ in range(HEIGHT + 1)]
 
 def print_grid(g, join = True, join_c = ""):
     for r in g:
@@ -28,6 +29,8 @@ def uno(n: int):
         return 1
     return 0
 
+def replace_2d(ls, d):
+    return [[n if (n:= d.get(s)) else s for s in t] for t in ls]
 
 @dataclass
 class Boundaries(tuple):
@@ -91,8 +94,8 @@ def index_2d(a: list | tuple, i) -> Pos | None:
 def indexes(a, i) -> list[int] | None:
     return [idx for idx, thing in enumerate(a) if thing == i]
 
-def indexes_2d(a, i) -> list[Pos] | None:
-    return [Pos(y, s.index(i)) for y, s in enumerate(a) if i in s]
+def indexes_2d(a, i) -> list[list[int]] | None:
+    return sum([[(y,x) for x in indexes(s, i)] for y, s in enumerate(a) if i in s], [])
 
 def iter_double_offset(a: list | tuple):
     for idx in range(len(a) - 1):
@@ -127,16 +130,70 @@ for line_idx, line in enumerate(day_input):
                     f = Pos.up
             
             # curr -= Pos(0, 1)
-            grid[curr.y][curr.x] = '#'
+            grid[curr.y][curr.x] = 1
             for _ in range(abs(x)+abs(y)):
                 f(curr)
-                grid[curr.y][curr.x] = '#'
+                grid[curr.y][curr.x] = 1
 
         except:
             print(curr, HEIGHT, X_START, X_END, X_END - X_START, curr + Pos(0, X_START), head + Pos(0, X_START), tail +Pos(0, X_START))
-            print_grid(grid)
+            print_grid(replace_2d(grid,{0:'.', 1:'#', 2:'0'}))
             raise Exception()
 
 
-print_grid(grid)
+def valid(grid, x, y):
+    return not grid[y][x]
+
+def void_below(grid, y):
+    return y + 1 >= len(grid)
+
+def solid_below(grid, x, y):
+    if void_below(grid, y):
+        raise Exception()
+    return bool(grid[y+1][x])
+
+def can_drop(grid, x, y):
+    if void_below(grid, y):
+        raise Exception()
+    return not solid_below(grid, x, y)
+
+def void_left(grid, x):
+    return x - 1 < 0
+
+def void_right(grid, x):
+    return x + 1 >= len(grid[0])
+
+def can_slide_left(grid, x, y):
+    return not grid[y+1][x-1]
+
+def can_slide_right(grid, x, y):
+    return not grid[y+1][x+1]
+
+voided = False
+while not grid[0][500 - X_START] and not voided:
+    y, x = 0, 500 - X_START
+    print_grid(replace_2d(copy(grid),{0:'.', 1:'#', 2:'o'}))
+    print()
+    while True:
+        # print(0)
+        if void_below(grid, y):
+            voided = True
+            break
+        elif can_drop(grid, x, y):
+            y += 1
+        elif solid_below(grid, x, y):
+            if void_left(grid, x) or void_right(grid, x):
+                voided = True
+                break
+            elif can_slide_left(grid, x, y):
+                y += 1
+                x -= 1
+            elif can_slide_right(grid, x, y):
+                y += 1
+                x += 1
+            else:
+                grid[y][x] = 2
+                break
+print_grid(replace_2d(copy(grid),{0:'.', 1:'#', 2:'o'}))
+print(len(indexes_2d(grid, 2)))
 spawn = Pos(0, 500) - Pos(0, X_START)
