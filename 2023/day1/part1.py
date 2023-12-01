@@ -1,5 +1,5 @@
 #part 1
-from itertools import islice
+
 def parser(file = 'input.txt'):
     with open(file, 'r') as file:
         return file.readlines()
