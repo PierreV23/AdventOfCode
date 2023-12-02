@@ -21,3 +21,5 @@ if __name__ == '__main__':
     print(test)
     assert test == 8
     print(solver(parser()))
+    print(sum(int(game_id.split(' ')[1]) for game_id, sets_raw in (line.strip().split(': ') for line in open('input.txt')) if all({"red":13,"green":14,"blue":15}.get(cube.split(' ')[1], 0) >int(cube.split(' ')[0]) for cubes in sets_raw.split("; ") for cube in cubes.split(", "))))
+    print(sum(int(g.split(' ')[1]) for g,r in(l.strip().split(': ')for l in open('input.txt'))if all({"red":13,"green":14,"blue":15}.get(c.split(' ')[1],0)>int(c.split(' ')[0])for s in r.split("; ") for c in s.split(", "))))
