@@ -1,5 +1,6 @@
 from itertools import cycle
 from typing import Iterable
+from math import lcm
 
 def parser(file = 'input.txt'):
     with open(file, 'r') as file:
@@ -29,18 +30,8 @@ def solver(path, links):
     return finished
 
 
-def find_lcm(a):
-    # credit
-    # https://stackoverflow.com/a/42472824
-    from math import gcd
-    lcm = 1
-    for i in a:
-        lcm = lcm*i//gcd(lcm, i)
-    return lcm
-
-
 if __name__ == '__main__':
-    test = find_lcm(solver(*parser('test_input_p2.txt')))
+    test = lcm(*solver(*parser('test_input_p2.txt')))
     print(test)
     assert test == 6
-    print(find_lcm(solver(*parser())))
+    print(lcm(*solver(*parser())))
