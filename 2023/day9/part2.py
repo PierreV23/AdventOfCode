@@ -1,5 +1,6 @@
+from collections import deque
 from pprint import pprint
-from typing import Iterable
+from typing import Iterable, TypeVar
 
 
 def parser(file = 'input.txt'):
@@ -7,8 +8,9 @@ def parser(file = 'input.txt'):
         for line in file:
             yield line.strip('\n')
 
+T = TypeVar('T')
 
-def pairs(ls):
+def pairs(ls: list[T]) -> Iterable[tuple[T, T]]:
     a,b = iter(ls), iter(ls)
     next(b)
     return zip(a,b)
@@ -19,8 +21,8 @@ def difference(numbers):
 
 
 def solver(lines: Iterable[str]):
-    # l = iter(lines)
-    # next(l)
+    lines = iter(lines)
+    # next(lines)
     ans = 0
     for line in lines:
         numbers = [*map(int, line.split(' '))]
@@ -31,16 +33,12 @@ def solver(lines: Iterable[str]):
         while any(diff):
             diff = difference(diff)
             history.append(diff)
-            # print(diff)
-        # print("traceback")
-        # pprint(history)
+        history = [deque(h) for h in history]
+        # print(history)
         for diff, up in pairs(history[::-1]):
-            # print("before", diff, up)
-            # while len(diff) + 1 <= len(up):
-            up.append(diff[-1] + up[-1])
-            # print("after", diff, up)
-        # pprint(history)
-        ans += history[0][-1]
+            up.appendleft(up[0] - diff[0])
+        # print(history[0], history[0][-1])
+        ans += history[0][0]
     return ans
 
 
@@ -51,5 +49,5 @@ def solver(lines: Iterable[str]):
 if __name__ == '__main__':
     test = solver(parser('test_input.txt'))
     print(test)
-    assert test == 114
+    assert test == 2
     print(solver(parser()))
