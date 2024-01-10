@@ -94,9 +94,9 @@ pub fn main() !void {
 
     const p1 = try run_part([]const u8, part1, allocator, test_cases, &[_]isize{ 4, 2 }, inputs[0]);
 
-    try stdout.print("part1={}\n", .{p1});
+    try stdout.print("part1={}\n", .{p1.?});
 
     const p2 = try run_part([]const u8, part2, allocator, test_cases, &[_]isize{ 3, 11 }, inputs[0]);
 
-    try stdout.print("part1={}\n", .{p2});
+    try stdout.print("part1={}\n", .{p2.?});
 }
