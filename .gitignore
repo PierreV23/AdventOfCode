@@ -275,3 +275,6 @@ Cargo.lock
 # Added by cargo
 
 /target
+
+zig-cache/
+zig-out/
