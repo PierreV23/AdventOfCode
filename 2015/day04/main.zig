@@ -7,33 +7,33 @@ const read_and_split = aoclib.read_and_split;
 const run_part = aoclib.run_part;
 const Md5 = std.crypto.hash.Md5;
 
-fn part1(allocator: Allocator, input: []const u8) anyerror!?isize {
-    const stdout = std.io.getStdOut().writer();
-    var hasher = Md5.init(.{});
-    _ = hasher;
-    var count: usize = 0;
-    _ = count;
-    // while (true) {
-    var buf: [Md5.digest_length]u8 = undefined;
-    Md5.hash(input, &buf, .{});
-    // }
-    // const as_hex: [16]u8 = undefined;
+const Options = struct {
+    part: aoclib.Part = .one,
+};
+
+fn solver(allocator: Allocator, input: []const u8, options: Options) anyerror!?isize {
+    var count: isize = 10;
     var as_hex = ArrayList(u8).init(allocator);
     defer as_hex.deinit();
-    try std.fmt.fmtSliceHexLower(&buf).format("{}", .{}, as_hex.writer());
-    try stdout.print("{s} => {any} {s} {}", .{ input, buf, as_hex.items, std.mem.startsWith(u8, as_hex.items, "e8") });
-    return null;
-}
-
-fn part2(allocator: Allocator, input: []const u8) anyerror!?isize {
-    _ = input;
-    _ = allocator;
-    return null;
+    var buf: [Md5.digest_length]u8 = undefined;
+    var wzp_buf: [16 + 10]u8 = undefined;
+    while (true) {
+        as_hex.clearRetainingCapacity();
+        buf = undefined;
+        wzp_buf = undefined;
+        const wzp = try std.fmt.bufPrint(&buf, "{s}{}", .{ input, count });
+        Md5.hash(wzp, &buf, .{});
+        try std.fmt.fmtSliceHexLower(&buf).format("{}", .{}, as_hex.writer());
+        if (std.mem.startsWith(u8, as_hex.items, if (options.part == .one) "00000" else "000000")) {
+            break;
+        }
+        count += 1;
+    }
+    return count;
 }
 
 pub fn main() !void {
     const stdout = std.io.getStdOut().writer();
-    _ = stdout;
 
     var gpa = std.heap.GeneralPurposeAllocator(.{}){};
     defer _ = gpa.deinit();
@@ -64,12 +64,12 @@ pub fn main() !void {
         allocator.free(inputs);
     }
 
-    const p1 = try run_part([]const u8, part1, allocator, test_cases, &[_]isize{ 609043, 1048970 }, inputs[0]);
-    _ = p1;
+    // const p1 = try run_part([]const u8, part1, allocator, test_cases, &[_]isize{ 609043, 1048970 }, inputs[0]);
+    const p1 = try solver(allocator, inputs[0], .{});
 
-    // try stdout.print("part1={}\n", .{p1});
+    try stdout.print("part1={}\n", .{p1.?});
 
-    // const p2 = try run_part([]const u8, part2, allocator, test_cases, &[_]isize{ 3, 11 }, inputs[0]);
+    const p2 = try solver(allocator, inputs[0], .{ .part = .two });
 
-    // try stdout.print("part1={}\n", .{p2});
+    try stdout.print("part2={}\n", .{p2.?});
 }
