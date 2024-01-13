@@ -7,6 +7,11 @@ const Allocator = std.mem.Allocator;
 const ArrayList = std.ArrayList;
 const Reader = std.fs.File.Reader;
 
+pub const Part = enum(u1) {
+    one,
+    two,
+};
+
 pub fn read_and_split(allocator: Allocator, reader: Reader, delimiter: []const u8, ignore_chars: []const u8) ![][]const u8 {
     // const stdout = std.io.getStdOut().writer();
     var collection = ArrayList([]const u8).init(allocator);
