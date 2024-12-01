@@ -1,0 +1,1 @@
+cat $1 | tr ' ' '\t' | datamash transpose | xargs -I{} sh -c 'echo {} | tr " " "\n" | sort -n | tr "\n" "\t"; echo' | datamash transpose | awk '{ d = $1 - $2; s += (d < 0) ? -d : d} END {print s}'
