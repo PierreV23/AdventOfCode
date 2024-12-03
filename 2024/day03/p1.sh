@@ -1,0 +1,1 @@
+cat $1 | grep -Po 'mul\(\d+\,\d+\)' | tr -d 'mul()' | awk -F ',' '{s += $1*$2} END {print s}'
