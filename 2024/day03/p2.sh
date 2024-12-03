@@ -1,12 +1,12 @@
 cat $1 | grep -Po "(do\(\)|don\'t\(\))|(mul\(\d+\,\d+\))" | tr -d "mul'()" | awk -F ',' '
-BEGIN {d = "true"; s = 0}
+BEGIN {d = "do"; s = 0}
 {
     if ($0 == "do") {
-        d = "true";
+        d = "do";
     } else if ($0 == "dont") {
-        d = "false";
+        d = "dont";
     } else {
-        s += (d == "true") ? ($1*$2) : 0;
+        s += (d == "do") ? ($1*$2) : 0;
     }
 }
 END {print s}
