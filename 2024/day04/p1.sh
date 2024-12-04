@@ -1,0 +1,1 @@
+(cat $1; cat $1 | awk '{print sprintf("%*s%s%*s", NR, ".", $0, row_count-NR+1, ".") "|" sprintf("%*s%s%*s", row_count-NR+1, ".", $0, NR, ".")}' row_count=$(cat $1 | wc -l) | tr ' ' '.' | sed 's/./&\t/g' | datamash transpose | tr -d '\t'; cat $1 | sed 's/./&\t/g' | datamash transpose | tr -d '\t') | awk '{print gsub(/XMAS/, "XMAS") + gsub(/SAMX/, "SAMX")}' | paste -sd+ | bc
