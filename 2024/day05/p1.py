@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-from functools import cmp_to_key
 import sys
 
 with open(sys.argv[1], 'r') as file:
