@@ -55,27 +55,13 @@ for y, line in enumerate(lines):
                     continue
                 queue.append(nc)
                 queue_s.add(nc)
-        print(queue)
-        # for dy, dx in dirs:
-        #     ny, nx = y + dy, x + dx
-        #     if not :
-        #         continue
-        #     nc = ny, nx
-        #     if nc in plots:
-        #         oid = plots[nc]
-        #         if idmap[oid] == c:
-        #             plots[coord] = oid
-        #             break
-        # else:
-        #     plots[coord] = ids
-        #     idmap[ids] = c
-        #     ids += 1
+        # print(queue)
 
 del line
 del c
 
-pprint(plots)
-pprint(idmap)
+# pprint(plots)
+# pprint(idmap)
 perim = defaultdict(int)
 area = defaultdict(int)
 for y, line in enumerate(lines):
@@ -91,8 +77,8 @@ for y, line in enumerate(lines):
 
 price = 0
 for plant in perim.keys():
-    print(idmap[plant], perim[plant], area[plant])
+    # print(idmap[plant], perim[plant], area[plant])
     price += perim[plant] * area[plant]
 
-print(perim, area)
+# print(perim, area)
 print(price)
