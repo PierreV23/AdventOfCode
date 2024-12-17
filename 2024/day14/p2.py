@@ -22,10 +22,9 @@ else:
     HEIGHT = 103
     WIDTH = 101
 
-T = 1
-l = "A" * 20
-# SEC = 100
-for SEC in range(10_000):
+SEC = 0
+while True:
+    SEC += 1
     HL = HEIGHT // 2
     WL = WIDTH // 2
     posses = defaultdict(list)
@@ -39,27 +38,6 @@ for SEC in range(10_000):
         RU += (WL < nx) and (ny < HL)
         LD += (nx < WL) and (HL < ny)
         RD += (WL < nx) and (HL < ny)
-
-
-    # pprint(posses)
-    # print(LU, RU, RD, LD)
-    # print(LU * RU * RD * LD)
-
-    def p():
-        for y in range(HEIGHT):
-            print(
-                ''.join(
-                    ' ' if (y==HL or x==WL) else (f"{len(posses[x, y])}" if (x, y) in posses else '.')
-                    for x in range(WIDTH)
-                )
-            )
-    if any(
-        l in
-        ''.join(
-            (f"A" if (x, y) in posses else '.')
-            for x in range(WIDTH)
-        )
-        for y in range(HEIGHT)
-    ):
-        p()
+    if all(len(v)==1 for v in posses.values()):
         print(SEC)
+        break
