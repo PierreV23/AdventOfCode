@@ -1,0 +1,4 @@
+inputs
+.zig-cache/
+.direnv
+zig-out

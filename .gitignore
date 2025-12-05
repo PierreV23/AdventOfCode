@@ -278,3 +278,8 @@ Cargo.lock
 
 zig-cache/
 zig-out/
+
+
+# added by me :D
+.zig-cache/
+
