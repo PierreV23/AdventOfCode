@@ -50,3 +50,13 @@ echo "Created file: $INPUT/p1.zig"
 
 echo "$TEMPLATE" > "$INPUT/p2.zig"
 echo "Created file: $INPUT/p2.zig"
+
+INPUT_DIR="inputs/$INPUT"
+mkdir -p "$INPUT_DIR"
+echo "Created folder: $INPUT_DIR"
+
+touch "$INPUT_DIR/test01.txt"
+echo "Created file: $INPUT_DIR/test01.txt"
+
+touch "$INPUT_DIR/input.txt"
+echo "Created file: $INPUT_DIR/input.txt"
