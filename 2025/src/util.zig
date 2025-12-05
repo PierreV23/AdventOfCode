@@ -69,3 +69,38 @@ pub fn max(slice: anytype) ?@typeInfo(@TypeOf(slice)).pointer.child {
 
     return high;
 }
+
+pub fn getCoords8(row: anytype, col: @TypeOf(row)) [8][2]@TypeOf(row) {
+    // zig fmt: off
+    const deltas = [8][2]@TypeOf(row){
+        .{-1, -1}, .{-1, 0}, .{-1, 1},
+        .{0, -1},            .{0, 1},
+        .{1, -1},  .{1, 0},  .{1, 1},
+    };
+
+    var coords: [8][2]@TypeOf(row) = undefined;
+    inline for (deltas, 0..) |delta, i| {
+        coords[i] = .{ row + delta[0], col + delta[1] };
+    }
+    return coords;
+}
+
+pub fn getCoords4(row: anytype, col: @TypeOf(row)) [4][2]@TypeOf(row) {
+    // zig fmt: off
+    const deltas = [8][2]@TypeOf(row){
+                   .{-1, 0},
+        .{0, -1},            .{0, 1},
+                   .{1, 0},
+    };
+
+    var coords: [8][2]@TypeOf(row) = undefined;
+    inline for (deltas, 0..) |delta, i| {
+        coords[i] = .{ row + delta[0], col + delta[1] };
+    }
+    return coords;
+}
+
+
+pub fn isWithinGrid(height: anytype, width: @TypeOf(height), row: @TypeOf(height), col: @TypeOf(height)) bool {
+    return (0 <= row and row < height) and (0 <= col and col < width);
+}
