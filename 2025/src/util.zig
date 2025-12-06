@@ -29,6 +29,13 @@ pub fn readUntilBlank(allocator: std.mem.Allocator) ![]const u8 {
     return result.toOwnedSlice(allocator);
 }
 
+pub fn readUntilEOF(allocator: std.mem.Allocator) ![]const u8 {
+    const stdin = std.fs.File.stdin();
+
+    const contents = try stdin.readToEndAlloc(allocator, std.math.maxInt(usize));
+    return contents;
+}
+
 pub fn intIsEven(n: anytype) bool {
     return (n & 0b1) == 0;
 }
@@ -103,4 +110,26 @@ pub fn getCoords4(row: anytype, col: @TypeOf(row)) [4][2]@TypeOf(row) {
 
 pub fn isWithinGrid(height: anytype, width: @TypeOf(height), row: @TypeOf(height), col: @TypeOf(height)) bool {
     return (0 <= row and row < height) and (0 <= col and col < width);
+}
+
+
+pub fn parseIntDec(comptime T: type, buf: []const u8) !T {
+    return try std.fmt.parseInt(T, buf, 10);
+}
+
+pub fn withinIncl(left: anytype, right: @TypeOf(left), number: @TypeOf(left)) bool {
+    return left <= number and number <= right;
+}
+
+pub fn overlapIncl(
+    range1_left: anytype,
+    range1_right: @TypeOf(range1_left),
+    range2_left: @TypeOf(range1_left),
+    range2_right: @TypeOf(range1_left),
+) ?[2]@TypeOf(range1_left) {
+    if (withinIncl(range1_left, range1_right, range2_left) or withinIncl(range1_left, range1_right, range2_right)) {
+        return .{@min(range1_left, range2_left), @max(range1_right, range2_right)};
+    }
+
+    return null;
 }
