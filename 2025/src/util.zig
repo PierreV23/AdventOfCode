@@ -133,3 +133,33 @@ pub fn overlapIncl(
 
     return null;
 }
+
+
+
+pub fn split(allocator: std.mem.Allocator, slice: anytype, delimiter: []const @typeInfo(@TypeOf(slice)).pointer.child) !std.ArrayList(@TypeOf(slice)) {
+    const element_type = @typeInfo(@TypeOf(slice)).pointer.child;
+
+    var seq: std.ArrayList(@TypeOf(slice)) = .empty;
+    errdefer seq.deinit(allocator);
+
+    if (delimiter.len == 1) {
+        var it = std.mem.splitScalar(element_type, slice, delimiter[0]);
+        while (it.next()) |el| {
+            try seq.append(allocator, el);
+        }
+    } else {
+        var it = std.mem.splitSequence(element_type, slice, delimiter);
+        while (it.next()) |el| {
+            try seq.append(allocator, el);
+        }
+    }
+
+    return seq;
+}
+
+pub fn Point(comptime T: type) type {
+    return struct {
+        row: T,
+        col: T
+    };
+}
