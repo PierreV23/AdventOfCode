@@ -46,14 +46,12 @@ pub fn main() !void {
                 cols[0] = col;
             }
 
-            for (cols) |some_col| {
-                if (some_col) |new_col| {
-                    var new_val = val;
-                    if (curr.get(new_col)) |existing_val| new_val += existing_val;
+            for (cols) |some_col| if (some_col) |new_col| {
+                var new_val = val;
+                if (curr.get(new_col)) |existing_val| new_val += existing_val;
 
-                    try curr.put(new_col, new_val);
-                }
-            }
+                try curr.put(new_col, new_val);
+            };
         }
 
         prev.deinit();
